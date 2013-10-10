@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<manifest>
+	<!-- core extension information -->
+	<plugin>
+		<name value="B2Quizlet2" />
+		<description value="Blackboard Building Blocks Quizlet2" />
+		<handle value="B2Quizlet2" />
+		<version value="0.0.0.0.1" />
+		<requires>
+			<bbversion value="9.1.0" />
+		</requires>
+		<vendor>
+			<id value="na" />
+			<name value="none" />
+			<url value="" />
+			<description value="" />
+		</vendor>
+		<http-actions>
+			<config value="system/about.jsp" />
+		</http-actions>
+
+		<!-- Content Type Handlers Defined by This Buidling Block -->
+		<content-handlers>
+			<!-- Content Type Handlers for Building Block. -->
+			<content-handler>
+				<name value="Quizlet Flash Card Set" />
+				<handle value="resource/x-bb-b2quizlet-content-mashup" />
+				<http-actions>
+					<create value="quizlet_content_mashup.jsp" />
+				</http-actions>
+				<icons>
+					<toolbar value="/images/b2sk_logo_12x12.png" />
+					<listitem value="images/b2sk_logo_12x12.png" />
+				</icons>
+				<types>
+					<type>
+						<action-type value="mashup" />
+					</type>
+					<type>
+						<action-type value="image" />
+					</type>
+				</types>
+			</content-handler>
+		</content-handlers>
+
+		<!-- Tools defined by this Building Block -->
+		<application-defs>
+			<application handle="b2q" type="shared" use-ssl="false"
+				name="B2Quizlet" can-allow-guest="true" small-icon="images/b2sk_logo.png"
+				large-icon="" is-course-tool="false">
+				<description>plugin.app.description</description>
+				<links>
+					<link><!-- " System Tool" Entry Point -->
+						<type value="system_tool" />
+						<name value="Quizlet Tool" />
+						<url value="system/about.jsp" />
+						<description value="B2Quizlet Building Block" />
+						<icons>
+							<listitem value="images/byob2_logo_50x50.png" />
+						</icons>
+					</link>
+				</links>
+			</application>
+		</application-defs>
+
+		<!-- code permissions required for proper operation -->
+		<permissions>
+			<permission type="persist" name="Content" actions="create,modify,delete" />
+			<permission type="attribute" name="user.authinfo" actions="get,set" />
+			<permission type="attribute" name="user.personalinfo" actions="get,set" />
+		</permissions>
+	</plugin>
+
+</manifest>
