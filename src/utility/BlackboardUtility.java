@@ -26,7 +26,7 @@ public class BlackboardUtility {
 	}
 	
 	/**
-	 * 
+	 * This method returns a score object.
 	 * @param coursememberShipId
 	 * @param lineItemId
 	 * @return
@@ -204,6 +204,4 @@ public class BlackboardUtility {
 			
 		}
 	}
-	
-	
 }
