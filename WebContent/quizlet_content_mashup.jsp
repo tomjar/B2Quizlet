@@ -8,13 +8,15 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"
 	errorPage="error.jsp" 
-	import ="beans.grades.Grades"%>
+	import ="beans.grades.Grades"
+	import = "beans.users.Users"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@taglib uri="/bbNG" prefix="bbNG"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:useBean id="grades" scope="session" class="beans.grades.Grades"></jsp:useBean>
+<jsp:useBean id="users" scope="session" class="beans.users.Users"></jsp:useBean>
 
 <!-- Importing values from the bundles -->
 <fmt:setLocale value="en" />
@@ -41,7 +43,9 @@
 	</bbNG:pageHeader>
 	<div id="userinfo">
 		<c:catch var="exception">
-			<c:out value="<%= grades.getUserInfo(ctx.getCourseId()) %>"></c:out>
+			<c:out value="<%= users.getUserInfo(ctx.getCourseId()) %>"></c:out>
+			<br/>
+			<c:out value="<%= grades.getGradesByCourseId(ctx.getCourseId()) %>"></c:out>
 		</c:catch>
 		<c:if test = "${exception != null}">
   			<p>The exception is : ${exception} <br />

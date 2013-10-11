@@ -1,78 +1,79 @@
 package beans.grades;
 
+import utility.BlackboardUtility;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.java.swing.plaf.nimbus.SliderPainter;
+
 import blackboard.persist.*;
-import blackboard.persist.user.*;
-import blackboard.data.user.*;
+import blackboard.persist.course.CourseMembershipDbLoader;
+import blackboard.persist.gradebook.LineitemDbLoader;
+import blackboard.persist.gradebook.ScoreDbPersister;
+import blackboard.data.course.CourseMembership;
+import blackboard.data.gradebook.Lineitem;
+import blackboard.data.gradebook.Score;
+import blackboard.data.user.User;
+import blackboard.persist.gradebook.ScoreDbLoader;
+import blackboard.persist.user.UserDbLoader;
 
 public class Grades {
 
+	/**
+	 * This is a default no parameter constructor, 
+	 * which is needed in order to call methods in jsp pages. 
+	 * after you import it to the jsp page
+	 */
 	public Grades()
 	{
 		
 	}
 	
 	/**
-	 * This method retrieves a list of users for a specific course. The courseId
-	 * @param courseId this parameter is given by the context object from quizlet_content_mashup.jsp
-	 * @return a string containing the email's of the users for this course
-	 */
-	public String getUserInfo(Id courseId)
-	{
-		String userInfo = "";
-		List<User> userList = new ArrayList<User>();
-		try {
-			UserDbLoader ul = UserDbLoader.Default.getInstance();
-
-			userList = ul.loadByCourseId(courseId);
-		}
-		catch (KeyNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (PersistenceException e) {
-			e.printStackTrace();
-		}
-		
-		/*Get a list of user objects, this simply concatenates all of the users email addresses*/
-		for(int i = 0; i < userList.size(); i++)
-		{
-			userInfo += userList.get(i).getEmailAddress() + "\n";
-		}
-		
-		return userInfo;
-	}
-	
-	/**
-	 * 
-	 * @param courseId
-	 * @return
+	 * This function simply retrieves a list of scores based on the course.
+	 * @param courseId courseId this parameter is given by the context object from quizlet_content_mashup.jsp
+	 * @return a concatenated string of scores/grades
 	 */
 	public String getGradesByCourseId(Id courseId)
 	{
+		BlackboardUtility bu = new BlackboardUtility();
 		String grades = "";
+		List<Lineitem> lineItemList = new ArrayList<Lineitem>();
 		List<User> userList = new ArrayList<User>();
+		Score score = null;
+		Id courseMembershipId = null;
+		int i = 0, j = 0;
+		UserDbLoader ul = bu.getUserDbLoader();
+		LineitemDbLoader ll = bu.getLineItemDbLoader();
+		ScoreDbLoader sl = bu.getScoreDbLoader();
+		CourseMembershipDbLoader cml = bu.getCourseMembershipDbLoader();
+		lineItemList = bu.getLineItemListByCourseId(courseId, ll);
+		userList = bu.getUserListByCourseId(courseId, ul);
 		
-		try {
-			UserDbLoader ul = UserDbLoader.Default.getInstance();
-			userList = ul.loadByCourseId(courseId);
-		} 
-		catch (KeyNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (PersistenceException e) {
-			e.printStackTrace();
-		}
-		
-		/*This simply concatenates all of the users email addresses*/
-		for(int i = 0; i < userList.size(); i++)
-		{
-			//grades += userList.get(i). + "\n";
-		}
-		
-		
+			/*This simply concatenates all of the grade items values, simply a demonstration*/
+			for(i = 0; i < userList.size(); i++)
+				{
+					courseMembershipId = bu.getCourseMembershipId(courseId, userList.get(i).getId(), cml);
+					for(j = 0; j < lineItemList.size(); j++)
+					{
+						/*course membership id and line item id*/
+						score = bu.getScoreObject(courseMembershipId, lineItemList.get(j).getId(), sl);
+						if(score != null)
+						{
+							grades +=  score.getGrade() + "\n";
+						}
+						else
+						{
+							ScoreDbPersister scorePersister = bu.getScoreDbPersister();
+							score = new Score();
+							score.setCourseMembershipId(courseMembershipId);
+							score.setLineitemId(lineItemList.get(j).getId());
+							bu.persistScoreObject(scorePersister, score);
+						}
+					}
+				}
+
 		return grades;
 	}
 }
