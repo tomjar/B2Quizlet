@@ -2,11 +2,12 @@ package utility;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import beans.error.Error;
 import blackboard.data.ValidationException;
 import blackboard.data.gradebook.Lineitem;
 import blackboard.data.gradebook.Score;
 import blackboard.data.user.User;
+import blackboard.persist.BbPersistenceManager;
 import blackboard.persist.Id;
 import blackboard.persist.PersistenceException;
 import blackboard.persist.course.CourseMembershipDbLoader;
@@ -14,6 +15,7 @@ import blackboard.persist.gradebook.LineitemDbLoader;
 import blackboard.persist.gradebook.ScoreDbLoader;
 import blackboard.persist.gradebook.ScoreDbPersister;
 import blackboard.persist.user.UserDbLoader;
+import blackboard.platform.persistence.PersistenceServiceFactory;
 
 public class BlackboardUtility {
 
@@ -25,6 +27,16 @@ public class BlackboardUtility {
 		
 	}
 	
+	
+	/**
+	 * This method returns the BbPersistenceManager object
+	 * @return
+	 */
+	public BbPersistenceManager getBbPersistenceManager()
+	{
+		BbPersistenceManager bpm = PersistenceServiceFactory.getInstance().getDbPersistenceManager();
+		return bpm;
+	}
 	/**
 	 * This method returns a score object.
 	 * @param coursememberShipId
@@ -33,11 +45,14 @@ public class BlackboardUtility {
 	 */
 	public Score getScoreObject(Id courseMembershipId, Id lineItemId, ScoreDbLoader sl)
 	{
+		
 		Score score = null;
 		try{
 			score = sl.loadByCourseMembershipIdAndLineitemId(courseMembershipId, lineItemId);
 		}catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not load the score by course membership id and line item and id");
 			e.printStackTrace();
 		}
 		return score;
@@ -54,6 +69,8 @@ public class BlackboardUtility {
 			courseMembershipId = cml.loadByCourseAndUserId(courseId, userId).getId();
 		}catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not load the course membership by course and user id");
 			e.printStackTrace();
 		}
 		return courseMembershipId;
@@ -75,6 +92,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not load the user list by the couse id.");
 			e.printStackTrace();
 		}
 		return userList;
@@ -95,6 +114,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not load the line item list by the course id.");
 			e.printStackTrace();
 		}
 		return lineItemList;
@@ -112,6 +133,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not retrieve the course membership db loader.");
 			e.printStackTrace();
 		}
 		return cml;
@@ -129,6 +152,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not retrieve the score sb loader.");
 			e.printStackTrace();
 		}
 		return sl;
@@ -146,6 +171,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not retrieve line item db loader.");
 			e.printStackTrace();
 		}
 		return ll;
@@ -165,6 +192,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not retrieve the user db loader.");
 			e.printStackTrace();
 		}
 		return ul;
@@ -182,6 +211,8 @@ public class BlackboardUtility {
 		}
 		catch(PersistenceException e)
 		{
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not retrieve the score persister instance.");
 			e.printStackTrace();
 		}
 		 return scorePersister;
@@ -198,10 +229,12 @@ public class BlackboardUtility {
 		}
 		catch(ValidationException e)
 		{
-			
+			Error error = new Error();
+			error.writeErrorToLog(e, "The score has incorrect or corrupted data.");
 		}catch (PersistenceException e)
 		{
-			
+			Error error = new Error();
+			error.writeErrorToLog(e, "Could not insert the new score into the database.");
 		}
 	}
 }

@@ -14,5 +14,9 @@
 	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/servlet-api.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/javax.servlet.jsp.jstl-1.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tjr4zd/Downloads/axis2-1.6.2-bin/axis2-1.6.2/lib/axis2-kernel-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tjr4zd/Downloads/axis2-1.6.2-bin/axis2-1.6.2/lib/axis2-saaj-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tjr4zd/Downloads/axis.jar/axis.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

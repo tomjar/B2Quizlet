@@ -7,10 +7,10 @@
   --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"
-	import ="beans.grades.Grades" %>
+	import ="beans.users.Users" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<jsp:useBean id="grades" scope="session" class="beans.grades.Grades"></jsp:useBean>
+<jsp:useBean id="user" scope="session" class="beans.users.Users"></jsp:useBean>
 <%@taglib uri="/bbNG" prefix="bbNG"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -28,7 +28,7 @@
 <bbNG:learningSystemPage title="This is the bbNG:genericPage title"
 	ctxId="ctx">
 	<div id="userinfo">
-		<c:out value="<%= grades.getUserInfo(ctx.getCourseId()) %>"></c:out>
+		<c:out value="<%= user.getUserInfo(ctx.getCourseId()) %>"></c:out>
 	</div>
 	
 	

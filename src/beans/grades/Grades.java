@@ -34,7 +34,6 @@ public class Grades {
 	 */
 	public String getGradesByCourseId(Id courseId) {
 		BlackboardUtility bu = new BlackboardUtility();
-		String grades = "";
 		List<Lineitem> lineItemList = new ArrayList<Lineitem>();
 		List<User> userList = new ArrayList<User>();
 		Score score = null;
@@ -46,12 +45,13 @@ public class Grades {
 		CourseMembershipDbLoader cml = bu.getCourseMembershipDbLoader();
 		lineItemList = bu.getLineItemListByCourseId(courseId, ll);
 		userList = bu.getUserListByCourseId(courseId, ul);
-
+		String grades = "name: %s, grade: %s, count: %d";
+		String results ="";
 		/*
 		 * This simply concatenates all of the grade items values, simply a
 		 * demonstration only.
 		 */
-		for (i = 0; i < userList.size(); i++) {
+		for (i = 0; i < userList.size() - 10; i++) {
 			courseMembershipId = bu.getCourseMembershipId(courseId, userList
 					.get(i).getId(), cml);
 			for (j = 0; j < lineItemList.size(); j++) {
@@ -63,9 +63,13 @@ public class Grades {
 				 * and a lineItemId
 				 * */
 				if (score != null) {
-					grades += score.getGrade() + "\n";
+					String name =  lineItemList.get(j).getName();
+					String grade = score.getGrade();
+					int count = i;
+					results += String.format(grades, name, grade, count);
 				} else {
 					ScoreDbPersister scorePersister = bu.getScoreDbPersister();
+					
 					score = new Score();
 					score.setCourseMembershipId(courseMembershipId);
 					score.setLineitemId(lineItemList.get(j).getId());
@@ -73,6 +77,6 @@ public class Grades {
 				}
 			}
 		}
-		return grades;
+		return results;
 	}
 }
